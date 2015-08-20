@@ -25,7 +25,20 @@ executable cs194
 
 library
   ghc-options:         -Wall
-  exposed-modules:     CS194, Log
+  exposed-modules:     CS194,
+                       Chapter01,
+                       Chapter02,
+                       Chapter03,
+                       Chapter04,
+                       Chapter05,
+                       Chapter06,
+                       Chapter07,
+                       Chapter08,
+                       Chapter09,
+                       Chapter10,
+                       Chapter11,
+                       Chapter12,
+                       Log
   build-depends:       base >= 4.7 && <5,
                        bytestring
   hs-source-dirs:      src
@@ -34,7 +47,7 @@ library
 test-suite tests
   ghc-options:         -Wall
   type:                exitcode-stdio-1.0
-  main-is:             Tests.hs
+  main-is:             Spec.hs
   hs-source-dirs:      tests
   build-depends:       base,
                        cs194,
