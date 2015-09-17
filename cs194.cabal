@@ -40,6 +40,7 @@ library
                        Chapter12,
                        Log,
                        Parser,
+                       Sized,
                        StackVM
 
   build-depends:       base >= 4.7 && <5,

@@ -38,3 +38,8 @@ hanoi 1 a b _ = [(a, b)]
 hanoi n a b c = hanoi (n - 1) a c b ++
                 hanoi 1 a b c ++
                 hanoi (n - 1) c b a
+
+
+sumOfSquares :: [Int] -> Int -> Int
+sumOfSquares xs 1 = (xs !! 0)^2
+sumOfSquares xs n = (xs !! (n - 1))^2 + (sumOfSquares xs (n - 1))
