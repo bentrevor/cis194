@@ -1,8 +1,10 @@
 module Employee where
 
-data Tree a = Node { rootLabel :: a
-                   , subForest :: [Tree a]
-                   }
+import Data.Tree
+
+-- data Tree a = Node { rootLabel :: a
+--                    , subForest :: [Tree a]
+--                    }
 
 -- Employee names are represented by Strings.
 type Name = String
