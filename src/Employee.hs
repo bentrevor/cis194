@@ -19,7 +19,7 @@ data Employee = Emp { empName :: Name, empFun :: Fun }
 
 -- A type to store a list of guests and their total fun score.
 data GuestList = GL [Employee] Fun
-  deriving (Show, Eq)
+  deriving (Eq)
 
 instance Ord GuestList where
   compare (GL _ f1) (GL _ f2) = compare f1 f2

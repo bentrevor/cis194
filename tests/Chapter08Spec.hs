@@ -66,3 +66,15 @@ spec = do
       nextLevel emp5 [(GL [emp1] 1, GL [emp2] 2)] `shouldBe` (GL [emp5, emp2] 7, GL [emp1] 1)
       -- 2 -> 1 -> 5
       nextLevel emp2 [(GL [emp1] 1, GL [emp5] 5)] `shouldBe` (GL [emp2, emp5] 7, GL [emp1] 1)
+
+    it "maxFun" $ do
+      maxFun (Node emp1 []) `shouldBe` GL [emp1] 1
+      -- 1 -> 5 -> 2
+      maxFun (Node emp1 [Node emp5 [Node emp2 []]]) `shouldBe` GL [emp5] 5
+      -- 5 -> 1 -> 2
+      maxFun (Node emp5 [Node emp1 [Node emp2 []]]) `shouldBe` GL [emp5, emp2] 7
+
+    it "show GuestList" $ do
+      show (mempty :: GuestList) `shouldBe` "Total fun: 0\n"
+      show (GL [emp1] 1) `shouldBe` "Total fun: 1\nemp1\n"
+      show (GL [emp5, emp1] 6) `shouldBe` "Total fun: 6\nemp5\nemp1\n"

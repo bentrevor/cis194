@@ -7,6 +7,10 @@ instance Monoid GuestList where
   mempty = GL [] 0
   mappend (GL guests _) gl2 = foldr glCons gl2 guests
 
+instance Show GuestList where
+  show (GL emps fun) = "Total fun: " ++ show fun ++ "\n" ++ empNames
+    where empNames = unlines $ map empName emps
+
 glCons :: Employee -> GuestList -> GuestList
 glCons emp@(Emp _ fun) (GL guests totalFun) = GL (emp : guests) (totalFun + fun)
 
@@ -28,3 +32,10 @@ nextLevel boss results = (bestWithBoss, bestWithoutBoss)
   where bestWithBoss = glCons boss guestListWithoutBosses
         guestListWithoutBosses = glConcat $ map snd results
         bestWithoutBoss = glConcat $ map fst results
+
+maxFun :: Tree Employee -> GuestList
+maxFun tree = betterList $ treeFold nextLevel mempty tree
+  where betterList (gl1, gl2) = moreFun gl1 gl2
+
+printAnswer :: IO ()
+printAnswer = readFile "company.txt" >>= (\c -> putStrLn $ (show . maxFun . read) c)
