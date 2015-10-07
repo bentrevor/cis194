@@ -1,6 +1,6 @@
 module Main where
 
-import CS194
+import CIS194
 
 main :: IO ()
 main = putStrLn "swag"
