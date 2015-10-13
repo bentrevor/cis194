@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
 module Chapter08 where
 
 import Employee
@@ -14,6 +16,7 @@ instance Show GuestList where
 glCons :: Employee -> GuestList -> GuestList
 glCons emp@(Emp _ fun) (GL guests totalFun) = GL (emp : guests) (totalFun + fun)
 
+-- GuestList implements Ord by comparing fun values
 moreFun :: GuestList -> GuestList -> GuestList
 moreFun = max
 
@@ -23,15 +26,11 @@ moreFun = max
 treeFold :: (a -> [b] -> b) -> b -> Tree a -> b
 treeFold fn guestLists (Node {rootLabel = emp, subForest = emps}) = fn emp $ map (treeFold fn guestLists) emps
 
-glConcat :: [GuestList] -> GuestList
-glConcat [] = mempty
-glConcat (gl:gls) = foldr mappend gl gls
-
 nextLevel :: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 nextLevel boss results = (bestWithBoss, bestWithoutBoss)
   where bestWithBoss = glCons boss guestListWithoutBosses
-        guestListWithoutBosses = glConcat $ map snd results
-        bestWithoutBoss = glConcat $ map fst results
+        guestListWithoutBosses = mconcat $ map snd results
+        bestWithoutBoss = mconcat $ map fst results
 
 maxFun :: Tree Employee -> GuestList
 maxFun tree = betterList $ treeFold nextLevel mempty tree
