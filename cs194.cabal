@@ -41,6 +41,7 @@ library
                        Employee,
                        Log,
                        Parser,
+                       AParser,
                        Sized,
                        StackVM
 
