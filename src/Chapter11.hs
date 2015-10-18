@@ -20,8 +20,10 @@ ident = (++) <$> parseAlphas <*> maybeParseAlphaNums
   where parseAlphas = oneOrMore $ satisfy isAlpha
         maybeParseAlphaNums = zeroOrMore $ satisfy isAlphaNum
 
-notFollowedByAlpha :: Parser a -> Parser a
-notFollowedByAlpha pa = pa <* (satisfy (not . isAlpha))
+-- int should only be followed by space, ')', or end of string
+-- (but I think that's out of the scope of this hw...)
+-- notFollowedByAlpha :: Parser a -> Parser a
+-- notFollowedByAlpha pa = pa <* (satisfy (not . isAlpha))
 
 type Ident = String
 
@@ -34,12 +36,19 @@ data SExpr = A Atom | Comb [SExpr]
 parseIdent :: Parser Atom
 parseIdent = I <$> ident
 
--- int should only be followed by space, ')', or end of string
 parseInt :: Parser Atom
-parseInt = N <$> (notFollowedByAlpha posInt)
+parseInt = N <$> posInt
 
 parseAtom :: Parser Atom
-parseAtom = parseIdent <|> parseInt
+parseAtom = parseInt <|> parseIdent
 
--- parseSExpr :: Parser SExpr
--- parseSExpr = fmap A parseAtom
+parseA :: Parser SExpr
+parseA = A <$> parseAtom
+
+parseComb :: Parser SExpr
+parseComb = char '(' *> parseComb' <* char ')'
+  where parseComb' = Comb <$> oneOrMore parseSExpr
+
+parseSExpr :: Parser SExpr
+parseSExpr = spaces *> parseSExpr' <* spaces
+  where parseSExpr' = parseA <|> parseComb

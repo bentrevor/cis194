@@ -35,21 +35,24 @@ spec = do
 
     it "parseInt" $ do
       runParser parseInt "   asdf" `shouldBe` Nothing
-      runParser parseInt "3asdf" `shouldBe` Nothing
+      -- runParser parseInt "3asdf" `shouldBe` Nothing
       runParser parseInt "3" `shouldBe` Just (N 3, "")
-      runParser parseInt "3 asdf" `shouldBe` Just (N 3, "asdf")
+      runParser parseInt "3 asdf" `shouldBe` Just (N 3, " asdf")
 
     it "parseAtom" $ do
       runParser parseAtom "   asdf" `shouldBe` Nothing
-      runParser parseAtom "3asdf" `shouldBe` Nothing
-      runParser parseAtom "3 asdf" `shouldBe` Just (N 3, "asdf")
+      -- runParser parseAtom "3asdf" `shouldBe` Nothing
+      runParser parseAtom "3 asdf" `shouldBe` Just (N 3, " asdf")
 
-    -- it "sexpr" $ do
-    --   runParser parseSExpr "5x" `shouldBe` Nothing
-    --   runParser parseSExpr "5" `shouldBe` Just (A (N 5), "")
-    --   runParser parseSExpr "foo3" `shouldBe` Just (A (I "foo3"), "")
-    --   runParser parseSExpr "  5  " `shouldBe` Just (A (N 5), "")
-    --   runParser parseSExpr "  foo3  " `shouldBe` Just (A (I "foo3"), "")
-    --   -- runParser parseSExpr "(bar (foo) 3 5 874)" `shouldBe` Just ([I "bar", [I "foo"], N 3, N 5, N 874], "")
-    --   -- runParser parseSExpr "(((lambda x (lambda y (plus x y))) 3) 5)" `shouldBe` Just ([[[I "lambda", I "x", [I "lambda", I "y", [I "plus", I "x", I "y"]]], N 3], N 5] "")
-    --   -- runParser parseSExpr "(   extra   (  spaces   ) )" `shouldBe` Just ([I "extra", [I "spaces"]], "")
+    it "parseA" $ do
+      runParser parseA "   asdf" `shouldBe` Nothing
+      runParser parseA "3 asdf" `shouldBe` Just (A (N 3), " asdf")
+
+    it "sexpr" $ do
+      -- runParser parseSExpr "5x" `shouldBe` Nothing
+      runParser parseSExpr "5" `shouldBe` Just (A (N 5), "")
+      runParser parseSExpr "foo3" `shouldBe` Just (A (I "foo3"), "")
+      runParser parseSExpr "  5  " `shouldBe` Just (A (N 5), "")
+      runParser parseSExpr "  foo3  " `shouldBe` Just (A (I "foo3"), "")
+      runParser parseSExpr "(bar (foo) 3 5 874)" `shouldBe` Just (Comb [A (I "bar"), Comb [A (I "foo")], A (N 3), A (N 5), A (N 874)], "")
+      runParser parseSExpr "(   extra   (  spaces   ) )" `shouldBe` Just (Comb [A (I "extra"), Comb [A (I "spaces")]], "")
